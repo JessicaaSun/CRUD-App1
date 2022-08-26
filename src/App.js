@@ -3,13 +3,15 @@ import { useState } from 'react';
 import Header from './Components/Header';
 import Task1 from './Components/Task1';
 
+
 const App = () => {
     const [showAddTask, setShowAddTask] = useState(true)
     const [updateTask, setUpdateTask] = useState(null)
     const [toggleSave, setToggleSave] = useState(false)
     const [text, setText] = useState('')
-    const [date, setDate] = useState('')
+    // const [date, setDate] = useState('')
     const [reminder, setReminder] = useState(false)
+
     const [Tasks, setTasks] = useState([
       {
         id: 1,
@@ -48,7 +50,9 @@ const App = () => {
   // Add 
   const AddTask = () => {
     // const [text, setText] = useState('')
-    
+    // const [date, setDate] = useState('')
+    // const [reminder, setReminder] = useState(false)
+    // unfocus would be fixed if used hook inside component but wouldn't be able to use Update Task
     const onSubmit = (e) => {
       e.preventDefault() 
 
@@ -60,19 +64,19 @@ const App = () => {
         setTasks (
         Tasks.map((value) => {
             if(value.id === updateTask) {
-              return{...value, text: text, date: date, reminder: reminder}
+              return{...value, text: text, reminder: reminder} //date:date
             }
             return value;
           })
         )
       }
       else {
-        const newTask = {id: Math.floor(Math.random() * 10000) + 1, text: text, date: date, reminder: reminder}
+        const newTask = {id: Math.floor(Math.random() * 10000) + 1, text: text, reminder: reminder}//date:date
         setTasks([...Tasks, newTask])
       }
-
+      
       setText('')
-      setDate('')
+      // setDate('')
       setReminder(false)
       setToggleSave(false)
 
@@ -83,18 +87,17 @@ const App = () => {
           <label className="block text-[18px]">Task</label>
           <input className="w-full h-[40px] m-[5px] pt-[3px] pb-[3px] pl-[7px] pr-[7px] border border-transparent rounded-[3px] bg-pink-200 text-[17px] focus:border-[2px] focus:border-pink-400 focus:outline-none"
            type='text' placeholder="Add Task"
-           autoFocus
+          autoFocus // use auto focus bit bang issue sen lol bcuz been trying to fix 4h ai hz fix ot kert dumb pej
           value={text} onChange={(e) => setText(e.target.value)}
          />
         </div>
-        <div className='mt-[10px] mb-[20px]'>
+        {/* <div className='mt-[10px] mb-[20px]'>
           <label className="block text-[18px]">Date</label>
           <input className="w-full h-[40px] m-[5px] pt-[3px] pb-[3px] pl-[7px] pr-[7px] border border-transparent rounded-[3px] bg-pink-200 text-[17px] focus:border-[2px] focus:border-pink-400 focus:outline-none"
            type='text' placeholder="Add Date" 
-           autoFocus
           value={date} onChange={(e) => setDate(e.target.value)} 
           />
-        </div>
+        </div> */}
         <div className='flex items-center justify-between pb-[20px]'>
           <label className="flex-1 text-[18px]">Set Reminder</label>
           <input className="flex-2 h-[20px] w-[20px]" 
@@ -128,10 +131,9 @@ const App = () => {
     let newUpdate = Tasks.find((task) => {
       return task.id === id
     });
-    console.log(newUpdate);
     setToggleSave(true);
     setText(newUpdate.text);
-    setDate(newUpdate.date);
+    // setDate(newUpdate.date);
     setReminder(newUpdate.reminder);
     setUpdateTask(id);
   }
